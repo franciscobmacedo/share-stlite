@@ -5,6 +5,7 @@ from pyodide.http import open_url
 from streamlit_javascript import st_javascript
 import pandas as pd
 
+st.title("Share streamlit apps")
 
 BASE_URL = "https://franciscobmacedo.github.io/share-stlite/"
 SAVED_APPS_KEY = "saved_apps4"
@@ -23,7 +24,6 @@ def set_to_local_storage(k, v):
     )
 
 saved_apps = get_from_local_storage(SAVED_APPS_KEY)
-
 
 if saved_apps:
     st.header('Open a previously used stlite app')
@@ -124,7 +124,7 @@ class Page:
             st.warning('It is not possible to detect a "requirements.txt" file. If this is not expected, ensure your url points to a directory and not a file.', icon="⚠️")
 
         if len(self.files) > 1:
-            other_filenames = [f for f in self.files if f != entrypoint_filename]
+            other_filenames = [f for f in self.files if f != self.entrypoint_filename]
             st.header("3 - Other files")
             st.write('We found other files in this directory. Which ones should we include?')
             selected_other_filenames = st.multiselect(
