@@ -1,4 +1,5 @@
 const BASE_APP_FILES = {"base.py": {url: "https://raw.githubusercontent.com/franciscobmacedo/share-stlite/main/base.py"}}
+const BASE_REQUIREMENTS = ["streamlit_javascript"]
 const loadAppFromUrl = () => {
   console.log("loading app from url");
   const queryString = window.location.search;
@@ -12,7 +13,7 @@ const loadAppFromUrl = () => {
   );
   const requirements = urlParams.getAll("req");
   if (Object.keys(files).length === 0) {
-    mountStlite(BASE_APP_FILES, []);
+    mountStlite(BASE_APP_FILES, BASE_REQUIREMENTS);
     return
   }
   mountStlite(files, requirements);
