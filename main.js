@@ -1,4 +1,4 @@
-const BASE_APP_FILES = {"base.py": {url: "https://raw.githubusercontent.com/franciscobmacedo/testing-stlite/main/base.py"}}
+const BASE_APP_FILES = {"base.py": {url: "https://raw.githubusercontent.com/franciscobmacedo/share-stlite/main/base.py"}}
 const loadAppFromUrl = () => {
   console.log("loading app from url");
   const queryString = window.location.search;
