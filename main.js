@@ -1,33 +1,27 @@
-const isObjectEmpty = (objectName) => {
-  return Object.keys(objectName).length === 0;
+const BASE_APP_FILES = {"base.py": {url: "https://raw.githubusercontent.com/franciscobmacedo/testing-stlite/main/base.py"}}
+const loadAppFromUrl = () => {
+  console.log("loading app from url");
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const files = urlParams.getAll("url").reduce(
+    (a, url) => ({
+      ...a,
+      [new URL(url).pathname.split("/").pop()]: { url },
+    }),
+    {}
+  );
+  const requirements = urlParams.getAll("req");
+  if (Object.keys(files).length === 0) {
+    mountStlite(BASE_APP_FILES, []);
+    return
+  }
+  mountStlite(files, requirements);
 };
 
-function convertRawToGitHubURL(rawURL) {
-  const url = new URL(rawURL);
-  const pathSegments = url.pathname.split("/");
-
-  const user = pathSegments[1];
-  const repo = pathSegments[2];
-  const branch = pathSegments[3];
-  const filePath = pathSegments.slice(4).join("/");
-  const githubURL = `https://github.com/${user}/${repo}/blob/${branch}/${filePath}`;
-  return githubURL;
-}
-
 const mountStlite = (files, requirements) => {
-  appContainer = document.getElementById("app-container");
-  defaultContainer = document.getElementById("default-container");
-  sourceCodeButton = document.getElementById("source-code-button");
-  if (isObjectEmpty(files)) {
-    appContainer.style.display = "none";
-    defaultContainer.style.display = "block";
-    return;
-  }
-  defaultContainer.style.display = "none";
-  appContainer.style.display = "block";
-
+  console.log(files)
+  console.log(requirements)
   const entryPointName = Object.keys(files)[0];
-  const entryPointUrl = files[entryPointName]["url"];
   stlite.mount(
     {
       requirements: requirements, // Packages to install
@@ -36,14 +30,6 @@ const mountStlite = (files, requirements) => {
     },
     document.getElementById("root")
   );
-  sourceCodeButton.href = convertRawToGitHubURL(entryPointUrl);
 };
 
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const files = urlParams.getAll("url").reduce((a, url) => (
-  { ...a, [new URL(url).pathname.split("/").pop()]: { url } }
-), {});
-const requirements = urlParams.getAll("req");
-
-mountStlite(files, requirements);
+loadAppFromUrl();
