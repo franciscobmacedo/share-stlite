@@ -25,16 +25,16 @@ def set_to_local_storage(k, v):
 saved_apps = get_from_local_storage(SAVED_APPS_KEY)
 
 
-
-st.header('Open a previously used stlite app')
-for app in saved_apps.values():
-    path_segments = urlparse(app['search_url']).path.split("/")
-    st.markdown(f"""
-        - `{app['entrypoint_filename']}` from `{app['search_url']}`
-        [launch app]({app['url']}) ↗️
-        """,
-        unsafe_allow_html=True
-    )
+if saved_apps:
+    st.header('Open a previously used stlite app')
+    for app in saved_apps.values():
+        path_segments = urlparse(app['search_url']).path.split("/")
+        st.markdown(f"""
+            - `{app['entrypoint_filename']}` from `{app['search_url']}`
+            [launch app]({app['url']}) ↗️
+            """,
+            unsafe_allow_html=True
+        )
 
 st.header('Search for your stlite apps')
 
